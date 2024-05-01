@@ -19,7 +19,7 @@ sw=500
 window=p.display.set_mode((sh,sw))
 p.display.set_caption("Pong")
 sock=sk.socket(sk.AF_INET,sk.SOCK_STREAM)
-sock.connect(('192.168.9.247',12002))
+sock.connect(('127.0.0.1',12002))
 waitfor('000')
 clientNum=sock.recv(1024).decode()
 if clientNum=='A':
@@ -49,5 +49,4 @@ while game:
     elif v>(sw-30):
         v-=1
     p.display.update()
-    pr.c(coord)
     
