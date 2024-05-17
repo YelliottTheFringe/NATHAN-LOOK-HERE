@@ -18,9 +18,27 @@ def initialize():
     con=[]
     cC=(300,250)
     pr.c("Line 20")
-    cliSockA, cliIPA = sock.accept()
+    cliCon=False
+    while not cliCon:
+        try:
+            cliSockA, cliIPA = sock.accept()
+            cliSockA.send("valid".encode())
+            if cliSockA.recv(1024).decode() == 'valid':
+                cliCon=True
+        except:
+            pr.c("Nonclient connected, removing.")
+            cliSockA=''        
     print("Player 1 connected!")
-    cliSockB, cliIPB = sock.accept()
+    cliCon=False
+    while not cliCon:
+        try:
+            cliSockB, cliIPA = sock.accept()
+            cliSockB.send("valid".encode())
+            if cliSockB.recv(1024).decode() == 'valid':
+                cliCon=True
+        except:
+            pr.c("Nonclient connected, removing.")
+            cliSockB=''
     print("Player 2 connected! Game begins.")
     cliSockA.send('000'.encode())
     cliSockA.send('A'.encode())
@@ -33,24 +51,10 @@ while game:
     conditA=(cC[0]+20>=cA[0]-20 and cC[0]+20<=cA[0]+20 and cC[1]+20>=cA[1]-60 and cC[1]+20<=cA[1]+60 and cC[1]-20>=cA[1]-60 and cC[1]-20<=cA[1]+60)
     cB = pr.parseInSingle(cliSockB.recv(1024))
     conditB=(cC[0]-20>=cB[0]-20 and cC[0]-20<=cB[0]+20 and cC[1]+20>=cB[1]-60 and cC[1]+20<=cB[1]+60 and cC[1]-20>=cB[1]-60 and cC[1]-20<=cB[1]+60)
-    x  = x+int((mt*m.degrees(m.cos(m.radians(angle/15)))))
-    y  = y+int((mt*m.degrees(m.sin(m.radians(angle/15)))))
+    x  = 0
+    y  = 0
     pr.c(int((mt*m.degrees(m.cos(m.radians(angle))))/10)+1)
-    if x<=20 or x >580 or y<=20 or y>480 or conditA or conditB:
-        mt=-mt
-        angle = randint(1,360)
-        if x<=20:
-            x=21
-        if x>=580:
-            x=579
-        if y<=20:
-            y=21
-        if y>=480:
-            y=479
-    if angle>360:
-        angle -=360
-    elif angle<0:
-        angle +=360
+    
     cC=(x,y)
     outCoordsA=cC,cB
     outCoordsB=cC,cA
